@@ -31,5 +31,5 @@ deployment:
       - sudo $GCLOUD config set project $GCLOUD_PROJECT
       - sudo $GCLOUD config set compute/zone $GCLOUD_ZONE
       - sudo $GCLOUD config set container/cluster $GCLOUD_CLUSTER
-      - sudo $GCLOUD container clusters get-credentials
+      - sudo $GCLOUD container clusters get-credentials $GCLOUD_CLUSTER
       - kubectl cluster-info
