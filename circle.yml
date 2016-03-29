@@ -8,7 +8,7 @@ machine:
     GCLOUD_PROJECT: "nokt-dev"
     GCLOUD_ZONE: "us-central1-f"
     GCLOUD_CLUSTER: "cd"
-    CONTAINER_NAME: "ls-shipfast/ls-shipfast-www"
+    IMAGE_NAME: "ls-shipfast/ls-shipfast-www"
 
 general:
   branches:
@@ -27,9 +27,11 @@ deployment:
       - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
       - echo "y" | sudo $GCLOUD components --quiet install kubectl
       - sudo chmod 757 $HOME/.config/gcloud -R
-      - $GCLOUD auth activate-service-account --key-file $HOME/client-credentials.json
-      - $GCLOUD config set project $GCLOUD_PROJECT
-      - $GCLOUD config set compute/zone $GCLOUD_ZONE
-      - $GCLOUD config set container/cluster $GCLOUD_CLUSTER
-      - $GCLOUD container clusters get-credentials $GCLOUD_CLUSTER
+      - gcloud auth activate-service-account --key-file $HOME/client-credentials.json
+      - gcloud config set project $GCLOUD_PROJECT
+      - gcloud config set compute/zone $GCLOUD_ZONE
+      - gcloud config set container/cluster $GCLOUD_CLUSTER
+      - gcloud container clusters get-credentials $GCLOUD_CLUSTER
       - kubectl cluster-info
+      - docker tag $IMAGE_NAME gcr.io/$IMAGE_NAME:latest
+      - gcloud docker push gcr.io/$IMAGE_NAME --verbosity debug
