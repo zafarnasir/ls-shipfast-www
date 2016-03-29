@@ -44,7 +44,6 @@ targetCompatibility = 1.8
 group = 'ls-shipfast'
 
 jar {
-  baseName = 'www'
   version = '0.0.1'
 }
 
