@@ -105,11 +105,12 @@ task startIntegrationServices(type: Exec, group: 'docker') {
   commandLine 'docker', 'run', '-p', '27017', '--name', 'db', '-d', 'mongo'
 }
 task stopIntegrationServices(group: 'docker') << {
-  ignoreExitValue true
-
   // Clean-up integration services
   exec { commandLine 'docker', 'stop', 'db' }
-  exec { commandLine 'docker', 'rm', 'db' }
+  exec {
+    ignoreExitValue true
+    commandLine 'docker', 'rm', 'db'
+  }
 }
 
 check.dependsOn integrationTest
