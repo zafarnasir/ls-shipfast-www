@@ -4,10 +4,6 @@ machine:
   java:
     version: oraclejdk8
 
-dependencies:
-  pre:
-    - ./gradlew -q dependencies
-
 general:
   branches:
     only:
