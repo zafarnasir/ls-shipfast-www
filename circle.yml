@@ -30,8 +30,8 @@ dependencies:
 
 test:
   post:
-    - ./gradlew -q distDocker
     - ./gradlew -q integrationTest
+    - ./gradlew -q distDocker
 
 deployment:
   staging:
