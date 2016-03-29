@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   pre:
-    - ./gradlew dependencies
+    - ./gradlew -q dependencies
 
 general:
   branches:
@@ -16,5 +16,5 @@ general:
 
 test:
   post:
-    - ./gradlew distDocker
+    - ./gradlew -q distDocker
 
