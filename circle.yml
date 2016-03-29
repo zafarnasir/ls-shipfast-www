@@ -8,6 +8,7 @@ machine:
     GCLOUD_PROJECT: "nokt-dev"
     GCLOUD_ZONE: "us-central1-f"
     GCLOUD_CLUSTER: "cd"
+    CONTAINER_NAME: "ls-shipfast/ls-shipfast-www"
 
 general:
   branches:
@@ -29,4 +30,5 @@ deployment:
       - sudo $GCLOUD auth activate-service-account --key-file $HOME/client-credentials.json
       - sudo $GCLOUD config set project $GCLOUD_PROJECT
       - sudo $GCLOUD config set compute/zone $GCLOUD_ZONE
+      - sudo $GCLOUD config set container/cluster $GCLOUD_CLUSTER
       - kubectl version
