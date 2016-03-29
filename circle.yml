@@ -37,5 +37,5 @@ deployment:
   staging:
     branch: master
     commands:
-      - docker tag $IMAGE_NAME gcr.io/$GCLOUD_PROJECT/$CIRCLE_PROJECT_USERNAME/$IMAGE_NAME:latest
-      - gcloud docker push gcr.io/$GCLOUD_PROJECT/$CIRCLE_PROJECT_USERNAME/$IMAGE_NAME --verbosity debug
+      - docker tag $IMAGE_NAME gcr.io/$GCLOUD_PROJECT/$(echo "$CIRCLE_PROJECT_USERNAME" | awk '{print tolower($0)}')/$IMAGE_NAME:latest
+      - gcloud docker push gcr.io/$GCLOUD_PROJECT/$(echo "$CIRCLE_PROJECT_USERNAME" | awk '{print tolower($0)}')/$IMAGE_NAME --verbosity debug
