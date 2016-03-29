@@ -5,6 +5,7 @@ machine:
     version: oraclejdk8
   environment:
     GCLOUD_PROJECT: "nokt-dev"
+    GCLOUD_ZONE: "us-central1-f"
     GCLOUD_CLUSTER: "cd"
 
 general:
@@ -22,7 +23,9 @@ deployment:
     branch: master
     commands:
       - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
+      - sudo gcloud components install kubectl
       - gcloud auth activate-service-account --key-file $HOME/client-credentials.json
       - gcloud config set project $GCLOUD_PROJECT
+      - gcloud config set compute/zone $GCLOUD_ZONE
       - gcloud container clusters get-credentials $GCLOUD_CLUSTER
       - kubectl version
