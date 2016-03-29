@@ -16,22 +16,26 @@ general:
       - master
       - develop
 
+dependencies:
+  pre:
+    - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
+    - echo "y" | sudo $GCLOUD components --quiet install kubectl
+    - sudo chmod 757 $HOME/.config/gcloud -R
+    - gcloud auth activate-service-account --key-file $HOME/client-credentials.json
+    - gcloud config set project $GCLOUD_PROJECT
+    - gcloud config set compute/zone $GCLOUD_ZONE
+    - gcloud config set container/cluster $GCLOUD_CLUSTER
+    - gcloud container clusters get-credentials $GCLOUD_CLUSTER
+    - kubectl cluster-info
+
 test:
   post:
     - ./gradlew -q distDocker
+    - ./gradlew -q integrationTest
 
 deployment:
   staging:
     branch: master
     commands:
-      - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
-      - echo "y" | sudo $GCLOUD components --quiet install kubectl
-      - sudo chmod 757 $HOME/.config/gcloud -R
-      - gcloud auth activate-service-account --key-file $HOME/client-credentials.json
-      - gcloud config set project $GCLOUD_PROJECT
-      - gcloud config set compute/zone $GCLOUD_ZONE
-      - gcloud config set container/cluster $GCLOUD_CLUSTER
-      - gcloud container clusters get-credentials $GCLOUD_CLUSTER
-      - kubectl cluster-info
-      - docker tag $IMAGE_NAME gcr.io/$GCLOUD_PROJECT/$IMAGE_NAME:latest
-      - gcloud docker push gcr.io/$GCLOUD_PROJECT/$IMAGE_NAME --verbosity debug
+      - docker tag $IMAGE_NAME gcr.io/$GCLOUD_PROJECT/$CIRCLE_PROJECT_USERNAME/$IMAGE_NAME:latest
+      - gcloud docker push gcr.io/$GCLOUD_PROJECT/$CIRCLE_PROJECT_USERNAME/$IMAGE_NAME --verbosity debug
