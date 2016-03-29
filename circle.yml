@@ -1,0 +1,20 @@
+machine:
+  services:
+    - docker
+  java:
+    version: oraclejdk8
+
+dependencies:
+  pre:
+    - ./gradlew dependencies
+
+general:
+  branches:
+    only:
+      - master
+      - develop
+
+test:
+  post:
+    - ./gradlew distDocker
+
