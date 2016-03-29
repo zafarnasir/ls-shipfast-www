@@ -27,7 +27,6 @@ deployment:
       - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
       - echo "y" | sudo $GCLOUD components --quiet install kubectl
       - sudo chmod 757 $HOME/.config/gcloud -R
-      - sudo chmod 757 $HOME/.kube -R
       - $GCLOUD auth activate-service-account --key-file $HOME/client-credentials.json
       - $GCLOUD config set project $GCLOUD_PROJECT
       - $GCLOUD config set compute/zone $GCLOUD_ZONE
