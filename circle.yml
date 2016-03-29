@@ -24,7 +24,7 @@ deployment:
     branch: master
     commands:
       - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
-      - sudo $GCLOUD components install kubectl
+      - sudo CLOUDSDK_CORE_DISABLE_PROMPTS=1 GCLOUD=$GCLOUD -c "$GCLOUD components install kubectl"
       - sudo chmod 757 $HOME/.config/gcloud/logs -R
       - $GCLOUD auth activate-service-account --key-file $HOME/client-credentials.json
       - $GCLOUD config set project $GCLOUD_PROJECT
