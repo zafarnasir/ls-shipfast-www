@@ -22,7 +22,7 @@ deployment:
     branch: master
     commands:
       - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
-      - gcloud --quiet components update kubectl
       - gcloud auth activate-service-account --key-file $HOME/client-credentials.json
       - gcloud config set project $GCLOUD_PROJECT
       - gcloud container clusters get-credentials $GCLOUD_CLUSTER
+      - kubectl version
