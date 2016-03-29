@@ -4,6 +4,7 @@ machine:
   java:
     version: oraclejdk8
   environment:
+    GCLOUD: /opt/google-cloud-sdk/bin/gcloud
     GCLOUD_PROJECT: "nokt-dev"
     GCLOUD_ZONE: "us-central1-f"
     GCLOUD_CLUSTER: "cd"
@@ -23,9 +24,10 @@ deployment:
     branch: master
     commands:
       - echo $CLIENT_CREDENTIALS > $HOME/client-credentials.json
-      - sudo gcloud components install kubectl
-      - gcloud auth activate-service-account --key-file $HOME/client-credentials.json
-      - gcloud config set project $GCLOUD_PROJECT
-      - gcloud config set compute/zone $GCLOUD_ZONE
-      - gcloud container clusters get-credentials $GCLOUD_CLUSTER
+      - sudo $GCLOUD components install kubectl
+      - sudo chmod 757 $HOME/.config/gcloud/logs -R
+      - $GCLOUD auth activate-service-account --key-file $HOME/client-credentials.json
+      - $GCLOUD config set project $GCLOUD_PROJECT
+      - $GCLOUD config set compute/zone $GCLOUD_ZONE
+      - $GCLOUD container clusters get-credentials $GCLOUD_CLUSTER
       - kubectl version
