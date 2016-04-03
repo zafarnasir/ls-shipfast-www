@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HelloController {
     @RequestMapping("/hello/{name}")
     public String index(@PathVariable String name) {
-        return "Hi " + name + ", Greetings from Spring Boot!";
+        return "Hi " + name + ", Greetings from Spring Boot! (Github)";
     }
 }
