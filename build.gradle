@@ -65,11 +65,22 @@ sourceSets {
     }
     resources.srcDir file('src/intTest/resources')
   }
+  acceptanceTest {
+    java {
+      compileClasspath += main.output + test.output
+      runtimeClasspath += main.output + test.output
+      srcDir file('src/acceptTest/java')
+    }
+    resources.srcDir file('src/acceptTest/resources')
+  }
 }
 
 configurations {
   integrationTestCompile.extendsFrom testCompile
   integrationTestRuntime.extendsFrom testRuntime
+
+  acceptanceTestCompile.extendsFrom testCompile
+  acceptanceTestRuntime.extendsFrom testRuntime
 }
 
 dependencies {
@@ -100,6 +111,21 @@ task integrationTest(type: Test) {
   outputs.upToDateWhen { false }
 }
 
+task acceptanceTest(type: Test) {
+  testClassesDir = sourceSets.acceptanceTest.output.classesDir
+  classpath = sourceSets.acceptanceTest.runtimeClasspath
+  outputs.upToDateWhen { false }
+}
+
+task startAcceptanceServices(type: Exec, group: 'docker') {
+  // Define acceptance test services
+  commandLine 'echo', 'TBD'
+}
+
+task stopAcceptanceServices(group: 'docker') << {
+  // Clean-up acceptance test services
+}
+
 task startIntegrationServices(type: Exec, group: 'docker') {
   // Define integration services
   commandLine 'docker', 'run', '-p', '27017', '--name', 'db', '-d', 'mongo'
@@ -117,6 +143,11 @@ check.dependsOn integrationTest
 integrationTest.mustRunAfter test
 integrationTest.dependsOn startIntegrationServices
 integrationTest.finalizedBy stopIntegrationServices
+
+check.dependsOn acceptanceTest
+acceptanceTest.mustRunAfter integrationTest
+acceptanceTest.dependsOn startAcceptanceServices
+acceptanceTest.finalizedBy stopAcceptanceServices
 
 task createWrapper(type: Wrapper) {
   gradleVersion = '2.9'
