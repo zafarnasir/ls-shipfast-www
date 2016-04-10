@@ -2,9 +2,62 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8"/>
-	<title>Document</title>
+	<title>Welcome to Shipfast</title>
 </head>
 <body>
-<p th:text="'Hello, World!'" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<style>
+	.product-list {
+		margin-top: 25px;
+	}
+
+	.product-list .product {
+		border: 1px solid #eee;
+		border-radius: 3px;
+		padding: 10px;
+		margin-bottom: 20px;
+		text-align: center;
+		min-height: 300px;
+	}
+
+	.product-list .product .product-info {
+		min-height: 220px;
+	}
+
+	.product-info button {
+		border:0;
+		background:none;
+	}
+</style>
+
+<div class="row" th:if="${!available}">
+	<h3 class="text-center">Unable to list inventory</h3>
+	<h5 class="text-center">Please try again in a little while!</h5>
+</div>
+
+<div class="row product-list" th:if="${available}">
+	<div class="col-sm-3 col-xs-6" th:each="item : ${inventory}">
+		<div class="product">
+			<div class="product-info">
+				<button type="submit" name="imageSubmit" value="btn_was_clicked">
+					<img th:src="${item.image}"
+						 class="img-responsive tb-center tb-maxheight-115" alt="..."/>
+				</button>
+				<p class="primary-font" th:text="${item.name}"></p>
+				<p class="text-muted" th:text="${item.id}"></p>
+			</div>
+			<div class="btn-group product-action">
+				<button type="submit" name="Add to cart" class="btn btn-primary cart-btn">
+					<i class="fa fa-shopping-cart"></i>Buy Now!
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 </body>
 </html>
