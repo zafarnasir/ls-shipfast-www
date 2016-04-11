@@ -29,11 +29,13 @@ dependencies:
     - kubectl cluster-info
 
 test:
-  post:
+  override:
+    - gradle dependencies --info
+    - gradle build --info
     - ./gradlew -q integrationTest
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-    - ./gradlew -q distDocker
+    - gradle -q distDocker
 
 deployment:
   staging:
