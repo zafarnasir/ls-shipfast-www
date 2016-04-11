@@ -34,6 +34,37 @@
 	}
 </style>
 
+<script>
+	function buyItem(id, quantity) {
+		return $.ajax({
+			type: 'POST',
+			url: '/api/place_order',
+			dataType: 'json',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			data: JSON.stringify({
+				id: id,
+				quantity: quantity
+			})
+		}).done(function(response) {
+			showSuccess('Order successfully placed!');
+		}).fail(function(e) {
+			console.log(e);
+			showFailure('Failed to place an order!');
+		});
+	}
+
+	function showSuccess(msg) {
+		console.log(msg);
+	}
+
+	function showFailure(msg) {
+		console.error(msg);
+	}
+</script>
+
 <div class="row" th:if="${!available}">
 	<h3 class="text-center">Unable to list inventory</h3>
 	<h5 class="text-center">Please try again in a little while!</h5>
@@ -43,7 +74,7 @@
 	<div class="col-sm-3 col-xs-6" th:each="item : ${inventory}">
 		<div class="product">
 			<div class="product-info">
-				<button type="submit" name="imageSubmit" value="btn_was_clicked">
+				<button type="submit" name="imageSubmit" th:value="${item.id}">
 					<img th:src="${item.image}"
 						 class="img-responsive tb-center tb-maxheight-115" alt="..."/>
 				</button>
@@ -51,7 +82,8 @@
 				<p class="text-muted" th:text="${item.id}"></p>
 			</div>
 			<div class="btn-group product-action">
-				<button type="submit" name="Add to cart" class="btn btn-primary cart-btn">
+				<button type="submit" name="Add to cart" class="btn btn-primary cart-btn"
+						th:onclick="|buyItem('${item.id}', '1')|">
 					<i class="fa fa-shopping-cart"></i>Buy Now!
 				</button>
 			</div>
